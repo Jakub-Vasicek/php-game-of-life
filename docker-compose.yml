@@ -1,0 +1,10 @@
+services:
+  php-gol:
+    build:
+      context: docker/.
+      dockerfile: Dockerfile
+    volumes:
+      - .:/var/www
+      - ~/.ssh:/root/.ssh
+    tty: true
+    stdin_open: true

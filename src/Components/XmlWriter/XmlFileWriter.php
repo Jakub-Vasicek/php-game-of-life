@@ -1,7 +1,9 @@
 <?php declare(strict_types = 1);
 
-namespace Life;
+namespace BE\GoL\Components\XmlWriter;
 
+use BE\GoL\Components\XmlWriter\Exception\OutputWritingException;
+use BE\GoL\Model\World\World;
 use SimpleXMLElement;
 
 class XmlFileWriter
@@ -13,21 +15,20 @@ class XmlFileWriter
     {
     }
 
-
-    public function saveWorld(int $worldSize, int $speciesCount, array $cells): void
+    public function saveWorld(World $world): void
     {
         $life = simplexml_load_string(file_get_contents(__DIR__ . self::OUTPUT_TEMPLATE));
-        $life->world->cells = $worldSize;
-        $life->world->species = $speciesCount;
-        for ($y = 0; $y < $worldSize; $y++) {
-            for ($x = 0; $x < $worldSize; $x++) {
-                $cell = $cells[$y][$x]; /** @var int|null $cell */
-                if ($cell !== null) {
-                    $organism = $life->organisms->addChild('organism');
+        $life->world->cells = $world->getWidth();
+        $life->world->species = $world->getSpeciesCount();
+        for ($y = 0; $y < $world->getHeight(); $y++) {
+            for ($x = 0; $x < $world->getWidth(); $x++) {
+                $cell = $world->getCellByCoordinates($x, $y);
+                if ($cell->getType() !== null) {
                     /** @var SimpleXMLElement $organism */
+                    $organism = $life->organisms->addChild('organism');
                     $organism->addChild('x_pos', (string)$x);
                     $organism->addChild('y_pos', (string)$y);
-                    $organism->addChild('species', (string)$cell);
+                    $organism->addChild('species', (string)$cell->getType());
                 }
             }
         }

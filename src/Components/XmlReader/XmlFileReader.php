@@ -1,38 +1,45 @@
 <?php declare(strict_types = 1);
 
-namespace Life;
+namespace BE\GoL\Components\XmlReader;
 
+use BE\GoL\Components\XmlReader\Exception\InvalidInputException;
+use BE\GoL\Model\Cell\Cell;
+use BE\GoL\Model\Cell\Exception\CellDoesNotExistException;
+use BE\GoL\Model\Game\GameData;
+use BE\GoL\Model\World\WorldData;
+use BE\GoL\Model\World\WorldFactory;
 use SimpleXMLElement;
 
 class XmlFileReader
 {
+    private WorldFactory $worldFactory;
+
     public function __construct(private readonly string $filePath)
     {
+        $this->worldFactory = new WorldFactory();
     }
 
-    public function loadFile(): array
+    /**
+     * @throws InvalidInputException
+     * @throws CellDoesNotExistException
+     */
+    public function loadFileAsGameData(): GameData
     {
         $life = $this->loadXmlFile();
         $this->validateXmlFile($life);
 
-        $iterationsCount = (int)$life->world->iterations;
-        if ($iterationsCount < 0) {
-            throw new InvalidInputException("Value of element 'iterations' must be zero or positive number");
-        }
+        $xDimension = (int)$life->world->cells;
 
-        $worldSize = (int) $life->world->cells;
-        if ($worldSize <= 0) {
-            throw new InvalidInputException("Value of element 'cells' must be positive number");
-        }
+        $world = $this->worldFactory->createWorld(
+            new WorldData(
+                $xDimension,
+                $xDimension, //intentional, we work with a square world for now
+                $this->readCells($life),
+                (int)$life->world->species
+            )
+        );
 
-        $speciesCount = (int) $life->world->species;
-        if ($speciesCount <= 0) {
-            throw new InvalidInputException("Value of element 'species' must be positive number");
-        }
-
-        $cells = $this->readCells($life, $worldSize, $speciesCount);
-
-        return [$worldSize, $speciesCount, $cells, $iterationsCount];
+        return new GameData($world, (int)$life->world->iterations);
     }
 
     private function loadXmlFile(): SimpleXMLElement
@@ -55,20 +62,39 @@ class XmlFileReader
         return $life;
     }
 
+    /**
+     * @throws InvalidInputException
+     */
     private function validateXmlFile(SimpleXMLElement $life): void
     {
         if (!isset($life->world)) {
             throw new InvalidInputException("Missing element 'world'");
         }
-        if (!isset($life->world->iterations)) {
+
+        $iterations = (int)$life->world->iterations;
+        if (!isset($iterations)) {
             throw new InvalidInputException("Missing element 'iterations'");
         }
-        if (!isset($life->world->cells)) {
+        if ($iterations < 0) {
+            throw new InvalidInputException("Value of element 'iterations' must be zero or positive number");
+        }
+
+        $cells = (int)$life->world->cells;
+        if (!isset($cells)) {
             throw new InvalidInputException("Missing element 'cells'");
         }
-        if (!isset($life->world->species)) {
+        if ($cells <= 0) {
+            throw new InvalidInputException("Value of element 'cells' must be positive number");
+        }
+
+        $speciesCount = (int)$life->world->species;
+        if (!isset($speciesCount)) {
             throw new InvalidInputException("Missing element 'species'");
         }
+        if ($speciesCount <= 0) {
+            throw new InvalidInputException("Value of element 'species' must be positive number");
+        }
+
         if (!isset($life->organisms)) {
             throw new InvalidInputException("Missing element 'organisms'");
         }
@@ -82,43 +108,42 @@ class XmlFileReader
             if (!isset($organism->species)) {
                 throw new InvalidInputException("Missing element 'species' in some of the element 'organism'");
             }
+
+            if ($organism->x_pos < 0 || $organism->x_pos >= $cells) {
+                throw new InvalidInputException("Value of element 'x_pos' of element 'organism' must be between 0 and number of cells");
+            }
+            if ($organism->y_pos < 0 || $organism->y_pos >= $cells) {
+                throw new InvalidInputException("Value of element 'y_pos' of element 'organism' must be between 0 and number of cells");
+            }
+            $thisSpecies = (int)$organism->species;
+            if ($thisSpecies < 0 || $thisSpecies >= $speciesCount) {
+                throw new InvalidInputException("Value of element 'species' of element 'organism' must be between 0 and maximal number of species");
+            }
         }
     }
 
-    private function readCells(SimpleXMLElement $life, int $worldSize, int $speciesCount): array
+    /**
+     * @return Cell[]
+     */
+    private function readCells(SimpleXMLElement $life): array
     {
         $cells = [];
+        $newCells = [];
         foreach ($life->organisms->organism as $organism) {
-            $x = (int) $organism->x_pos;
-            if ($x < 0 || $x >= $worldSize) {
-                throw new InvalidInputException("Value of element 'x_pos' of element 'organism' must be between 0 and number of cells");
-            }
-            $y = (int) $organism->y_pos;
-            if ($y < 0 || $y >= $worldSize) {
-                throw new InvalidInputException("Value of element 'y_pos' of element 'organism' must be between 0 and number of cells");
-            }
-            $species = (int) $organism->species;
-            if ($species < 0 || $species >= $speciesCount) {
-                throw new InvalidInputException("Value of element 'species' of element 'organism' must be between 0 and maximal number of species");
-            }
-            $cells[$y] ??= [];
-            $finalSpecies = $species;
-            if (isset($cells[$y][$x])) {
-                $existingCell = $cells[$y][$x]; /** @var int $existingCell */
-                $availableSpecies = [$existingCell, $species];
-                $finalSpecies = $availableSpecies[array_rand($availableSpecies)];
-            }
-            $cells[$y][$x] = $finalSpecies;
+            $x = (int)$organism->x_pos;
+            $y = (int)$organism->y_pos;
+            $newCells[$y][$x][] = new Cell(
+                $x,
+                $y,
+                (int)$organism->species
+            );
         }
-        for ($y = 0; $y < $worldSize; $y++) {
-            $cells[$y] ??= [];
-            for ($x = 0; $x < $worldSize; $x++) {
-                if (!isset($cells[$y][$x])) {
-                    $cells[$y][$x] = null;
-                }
+
+        foreach ($newCells as $cellsRow) {
+            foreach ($cellsRow as $cellOccupants) {
+                $cells[] = $cellOccupants[array_rand($cellOccupants)];
             }
         }
         return $cells;
     }
-
 }
