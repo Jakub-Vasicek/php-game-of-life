@@ -1,7 +1,7 @@
-FROM php:8.1-cli
+FROM php:8.3-cli
 
-COPY docker /usr/src/gol
-WORKDIR /usr/src/gol
+COPY . /var/www
+WORKDIR /var/www
 
 RUN apt-get -y update
 
