@@ -14,7 +14,7 @@ class XmlFileReader
 {
     private WorldFactory $worldFactory;
 
-    public function __construct(private readonly string $filePath)
+    public function __construct()
     {
         $this->worldFactory = new WorldFactory();
     }
@@ -23,9 +23,9 @@ class XmlFileReader
      * @throws InvalidInputException
      * @throws CellDoesNotExistException
      */
-    public function loadFileAsGameData(): GameData
+    public function loadFileAsGameData(string $filePath): GameData
     {
-        $life = $this->loadXmlFile();
+        $life = $this->loadXmlFile($filePath);
         $this->validateXmlFile($life);
 
         $xDimension = (int)$life->world->cells;
@@ -42,14 +42,14 @@ class XmlFileReader
         return new GameData($world, (int)$life->world->iterations);
     }
 
-    private function loadXmlFile(): SimpleXMLElement
+    private function loadXmlFile(string $filePath): SimpleXMLElement
     {
-        if (!file_exists($this->filePath)) {
+        if (!file_exists($filePath)) {
             throw new InvalidInputException("Unable to read nonexistent file");
         }
         try {
             libxml_use_internal_errors(true);
-            $life = simplexml_load_string(file_get_contents($this->filePath));
+            $life = simplexml_load_string(file_get_contents($filePath));
             $errors = libxml_get_errors();
             libxml_clear_errors();
             if (count($errors) > 0) {

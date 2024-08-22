@@ -40,12 +40,12 @@ final class RunGameCommand extends Command
             throw new RuntimeException("Output file name must be a string");
         }
 
-        $gameData = (new XmlFileReader($inputFile))->loadFileAsGameData();
+        $gameData = (new XmlFileReader())->loadFileAsGameData($inputFile);
 
         $gameExecutor = new GameExecutor();
         $evolvedWorld = $gameExecutor->run($gameData->getWorld(), $gameData->getIterationsCount());
 
-        (new XmlFileWriter($outputFile))->saveWorld($evolvedWorld);
+        (new XmlFileWriter())->saveWorld($evolvedWorld, $outputFile);
         $output->writeln('File ' . $outputFile . ' was saved.');
 
         return 0;

@@ -56,7 +56,7 @@ class World
         $this->cells[$x][$y] = $cell;
     }
 
-    public function getSpeciesCount()
+    public function getSpeciesCount(): int
     {
         return $this->speciesCount;
     }

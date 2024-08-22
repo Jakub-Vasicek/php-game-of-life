@@ -10,12 +10,7 @@ class XmlFileWriter
 {
     private const OUTPUT_TEMPLATE = '/output-template.xml';
 
-
-    public function __construct(private readonly string $filePath)
-    {
-    }
-
-    public function saveWorld(World $world): void
+    public function saveWorld(World $world, string $filePath): void
     {
         $life = simplexml_load_string(file_get_contents(__DIR__ . self::OUTPUT_TEMPLATE));
         $life->world->cells = $world->getWidth();
@@ -32,17 +27,17 @@ class XmlFileWriter
                 }
             }
         }
-        $this->saveXml($life);
+        $this->saveXml($life, $filePath);
     }
 
 
-    private function saveXml(SimpleXMLElement $life): void
+    private function saveXml(SimpleXMLElement $life, string $filePath): void
     {
         $dom = new \DOMDocument('1.0');
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = true;
         $dom->loadXML($life->asXML());
-        $result = file_put_contents($this->filePath, $dom->saveXML());
+        $result = file_put_contents($filePath, $dom->saveXML());
         if ($result === false) {
             throw new OutputWritingException("Writing XML file failed");
         }
