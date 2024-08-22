@@ -28,39 +28,39 @@ Parameter ```-o``` is optional, default value is ```output.xml```.
     <world>
         <width>4</width> <!-- Width of the "world" -->
         <height>4</height> <!-- Width of the "world" -->
-        <species>1</species> <!-- Number of distinct species -->
+        <speciesCount>1</speciesCount> <!-- Number of distinct species -->
         <iterations>10</iterations> <!-- Number of iterations to be calculated -->
     </world>
     <organisms>
         <organism>
             <x_pos>2</x_pos> <!-- x position -->
             <y_pos>0</y_pos> <!-- y position -->
-            <species>0</species> <!-- Species type -->
+            <speciesType>0</speciesType> <!-- Species type -->
         </organism>
         <organism>
             <x_pos>0</x_pos>
             <y_pos>1</y_pos>
-            <species>0</species>
+            <speciesType>0</speciesType>
         </organism>
         <organism>
             <x_pos>3</x_pos>
             <y_pos>1</y_pos>
-            <species>0</species>
+            <speciesType>0</speciesType>
         </organism>
         <organism>
             <x_pos>0</x_pos>
             <y_pos>2</y_pos>
-            <species>0</species>
+            <speciesType>0</speciesType>
         </organism>
         <organism>
             <x_pos>3</x_pos>
             <y_pos>2</y_pos>
-            <species>0</species>
+            <speciesType>0</speciesType>
         </organism>
         <organism>
             <x_pos>1</x_pos>
             <y_pos>3</y_pos>
-            <species>0</species>
+            <speciesType>0</speciesType>
         </organism>
     </organisms>
 </life>

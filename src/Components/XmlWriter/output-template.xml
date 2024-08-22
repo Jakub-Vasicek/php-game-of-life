@@ -3,7 +3,7 @@
     <world>
         <width></width>
         <height></height>
-        <species></species>
+        <speciesCount></speciesCount>
     </world>
     <organisms>
     </organisms>

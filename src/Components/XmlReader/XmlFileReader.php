@@ -36,7 +36,7 @@ class XmlFileReader
                 $xDimension,
                 $yDimension,
                 $this->readCells($life),
-                (int)$life->world->species
+                (int)$life->world->speciesCount
             )
         );
 
@@ -96,12 +96,12 @@ class XmlFileReader
             throw new InvalidInputException("Value of element 'height' must be positive number");
         }
 
-        $speciesCount = (int)$life->world->species;
+        $speciesCount = (int)$life->world->speciesCount;
         if (!isset($speciesCount)) {
-            throw new InvalidInputException("Missing element 'species'");
+            throw new InvalidInputException("Missing element 'speciesCount'");
         }
         if ($speciesCount <= 0) {
-            throw new InvalidInputException("Value of element 'species' must be positive number");
+            throw new InvalidInputException("Value of element 'speciesCount' must be positive number");
         }
 
         if (!isset($life->organisms)) {
@@ -114,8 +114,8 @@ class XmlFileReader
             if (!isset($organism->y_pos)) {
                 throw new InvalidInputException("Missing element 'y_pos' in some of the element 'organism'");
             }
-            if (!isset($organism->species)) {
-                throw new InvalidInputException("Missing element 'species' in some of the element 'organism'");
+            if (!isset($organism->speciesType)) {
+                throw new InvalidInputException("Missing element 'speciesType' in some of the element 'organism'");
             }
 
             if ($organism->x_pos < 0 || $organism->x_pos >= $width) {
@@ -126,7 +126,7 @@ class XmlFileReader
             }
             $thisSpecies = (int)$organism->species;
             if ($thisSpecies < 0 || $thisSpecies >= $speciesCount) {
-                throw new InvalidInputException("Value of element 'species' of element 'organism' must be between 0 and maximal number of species");
+                throw new InvalidInputException("Value of element 'speciesType' of element 'organism' must be between 0 and number of 'species'");
             }
         }
     }
@@ -144,7 +144,7 @@ class XmlFileReader
             $newCells[$y][$x][] = new Cell(
                 $x,
                 $y,
-                (int)$organism->species
+                (int)$organism->speciesType
             );
         }
 

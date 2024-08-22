@@ -3,38 +3,38 @@
     <world>
         <width>4</width>
         <height>4</height>
-        <species>1</species>
+        <speciesCount>1</speciesCount>
     </world>
     <organisms>
         <organism>
             <x_pos>1</x_pos>
             <y_pos>1</y_pos>
-            <species>0</species>
+            <speciesType>0</speciesType>
         </organism>
         <organism>
             <x_pos>2</x_pos>
             <y_pos>1</y_pos>
-            <species>0</species>
+            <speciesType>0</speciesType>
         </organism>
         <organism>
             <x_pos>3</x_pos>
             <y_pos>1</y_pos>
-            <species>0</species>
+            <speciesType>0</speciesType>
         </organism>
         <organism>
             <x_pos>0</x_pos>
             <y_pos>2</y_pos>
-            <species>0</species>
+            <speciesType>0</speciesType>
         </organism>
         <organism>
             <x_pos>1</x_pos>
             <y_pos>2</y_pos>
-            <species>0</species>
+            <speciesType>0</speciesType>
         </organism>
         <organism>
             <x_pos>2</x_pos>
             <y_pos>2</y_pos>
-            <species>0</species>
+            <speciesType>0</speciesType>
         </organism>
     </organisms>
 </life>

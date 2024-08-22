@@ -15,7 +15,7 @@ class XmlFileWriter
         $life = simplexml_load_string(file_get_contents(__DIR__ . self::OUTPUT_TEMPLATE));
         $life->world->width = $world->getWidth();
         $life->world->height = $world->getHeight();
-        $life->world->species = $world->getSpeciesCount();
+        $life->world->speciesCount = $world->getSpeciesCount();
         for ($y = 0; $y < $world->getHeight(); $y++) {
             for ($x = 0; $x < $world->getWidth(); $x++) {
                 $cell = $world->getCellByCoordinates($x, $y);
@@ -24,7 +24,7 @@ class XmlFileWriter
                     $organism = $life->organisms->addChild('organism');
                     $organism->addChild('x_pos', (string)$x);
                     $organism->addChild('y_pos', (string)$y);
-                    $organism->addChild('species', (string)$cell->getType());
+                    $organism->addChild('speciesType', (string)$cell->getType());
                 }
             }
         }
