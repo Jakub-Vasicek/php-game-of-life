@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 <life>
     <world>
-        <width>4</width>
-        <height>4</height>
-        <species>1</species>
-        <iterations>1</iterations>
+        <width>4</width> <!-- Dimension of the square "world" -->
+        <height>4</height> <!-- Dimension of the square "world" -->
+        <species>1</species> <!-- Number of distinct species -->
+        <iterations>10</iterations> <!-- Number of iterations to be calculated -->
     </world>
     <organisms>
         <organism>
-            <x_pos>2</x_pos>
-            <y_pos>0</y_pos>
-            <species>0</species>
+            <x_pos>2</x_pos> <!-- x position -->
+            <y_pos>0</y_pos> <!-- y position -->
+            <species>0</species> <!-- Species type -->
         </organism>
         <organism>
             <x_pos>0</x_pos>

@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <life>
     <world>
-        <cells>4</cells>
+        <width>4</width>
+        <height>4</height>
         <species>1</species>
         <iterations>0</iterations>
     </world>

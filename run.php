@@ -1,6 +1,6 @@
 <?php
 
-use Life\RunGameCommand;
+use BE\GoL\Components\Command\RunGameCommand;
 use Symfony\Component\Console\Application;
 
 require './vendor/autoload.php';

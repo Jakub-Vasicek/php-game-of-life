@@ -2,8 +2,8 @@
 
 namespace Tests\Life;
 
+use BE\GoL\Components\Command\RunGameCommand;
 use DOMDocument;
-use Life\RunGameCommand;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;

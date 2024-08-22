@@ -1,8 +1,9 @@
 <?xml version="1.0"?>
 <life>
     <world>
-        <cells></cells>
-        <species></species>
+        <width></width>
+        <height></height>
+        <speciesCount></speciesCount>
     </world>
     <organisms>
     </organisms>

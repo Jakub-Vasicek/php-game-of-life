@@ -1,39 +1,40 @@
 <?xml version="1.0"?>
 <life>
     <world>
-        <cells>5</cells>
-        <species>2</species>
+        <width>5</width>
+        <height>5</height>
+        <speciesCount>2</speciesCount>
     </world>
     <organisms>
         <organism>
             <x_pos>0</x_pos>
             <y_pos>0</y_pos>
-            <species>0</species>
+            <speciesType>0</speciesType>
         </organism>
         <organism>
             <x_pos>1</x_pos>
             <y_pos>0</y_pos>
-            <species>0</species>
+            <speciesType>0</speciesType>
         </organism>
         <organism>
             <x_pos>0</x_pos>
             <y_pos>1</y_pos>
-            <species>0</species>
+            <speciesType>0</speciesType>
         </organism>
         <organism>
             <x_pos>1</x_pos>
             <y_pos>1</y_pos>
-            <species>0</species>
+            <speciesType>0</speciesType>
         </organism>
         <organism>
             <x_pos>3</x_pos>
             <y_pos>3</y_pos>
-            <species>1</species>
+            <speciesType>1</speciesType>
         </organism>
         <organism>
             <x_pos>4</x_pos>
             <y_pos>3</y_pos>
-            <species>1</species>
+            <speciesType>1</speciesType>
         </organism>
     </organisms>
 </life>
