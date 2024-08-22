@@ -1,9 +1,19 @@
 # Game of Life
 
 PHP implementation of [Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life).
+## Setup
+
+### Building up
+```
+docker compose up -d
+```
+
+### Running the container
+```
+docker compose exec php-gol bash
+```
 
 ## How to run application
-
 ```
 php run.php game:run -i input.xml -o output.xml
 ```
@@ -12,7 +22,6 @@ Parameter ```-i``` is optional, default value is ```input.xml```.
 Parameter ```-o``` is optional, default value is ```output.xml```.
 
 ## Sample input
-
 ```xml
 <?xml version="1.0"?>
 <life>
