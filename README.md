@@ -26,7 +26,8 @@ Parameter ```-o``` is optional, default value is ```output.xml```.
 <?xml version="1.0"?>
 <life>
     <world>
-        <cells>4</cells> <!-- Dimension of the square "world" -->
+        <width>4</width> <!-- Width of the "world" -->
+        <height>4</height> <!-- Width of the "world" -->
         <species>1</species> <!-- Number of distinct species -->
         <iterations>10</iterations> <!-- Number of iterations to be calculated -->
     </world>

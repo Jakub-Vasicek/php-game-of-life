@@ -13,7 +13,8 @@ class XmlFileWriter
     public function saveWorld(World $world, string $filePath): void
     {
         $life = simplexml_load_string(file_get_contents(__DIR__ . self::OUTPUT_TEMPLATE));
-        $life->world->cells = $world->getWidth();
+        $life->world->width = $world->getWidth();
+        $life->world->height = $world->getHeight();
         $life->world->species = $world->getSpeciesCount();
         for ($y = 0; $y < $world->getHeight(); $y++) {
             for ($x = 0; $x < $world->getWidth(); $x++) {

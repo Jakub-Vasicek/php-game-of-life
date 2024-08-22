@@ -28,12 +28,13 @@ class XmlFileReader
         $life = $this->loadXmlFile($filePath);
         $this->validateXmlFile($life);
 
-        $xDimension = (int)$life->world->cells;
+        $xDimension = (int)$life->world->width;
+        $yDimension = (int)$life->world->height;
 
         $world = $this->worldFactory->createWorld(
             new WorldData(
                 $xDimension,
-                $xDimension, //intentional, we work with a square world for now
+                $yDimension,
                 $this->readCells($life),
                 (int)$life->world->species
             )
@@ -79,12 +80,20 @@ class XmlFileReader
             throw new InvalidInputException("Value of element 'iterations' must be zero or positive number");
         }
 
-        $cells = (int)$life->world->cells;
-        if (!isset($cells)) {
-            throw new InvalidInputException("Missing element 'cells'");
+        $width = (int)$life->world->width;
+        if (!isset($width)) {
+            throw new InvalidInputException("Missing element 'width'");
         }
-        if ($cells <= 0) {
-            throw new InvalidInputException("Value of element 'cells' must be positive number");
+        if ($width <= 0) {
+            throw new InvalidInputException("Value of element 'width' must be positive number");
+        }
+
+        $height = (int)$life->world->height;
+        if (!isset($height)) {
+            throw new InvalidInputException("Missing element 'height'");
+        }
+        if ($height <= 0) {
+            throw new InvalidInputException("Value of element 'height' must be positive number");
         }
 
         $speciesCount = (int)$life->world->species;
@@ -109,11 +118,11 @@ class XmlFileReader
                 throw new InvalidInputException("Missing element 'species' in some of the element 'organism'");
             }
 
-            if ($organism->x_pos < 0 || $organism->x_pos >= $cells) {
-                throw new InvalidInputException("Value of element 'x_pos' of element 'organism' must be between 0 and number of cells");
+            if ($organism->x_pos < 0 || $organism->x_pos >= $width) {
+                throw new InvalidInputException("Value of element 'x_pos' of element 'organism' must be between 0 and height");
             }
-            if ($organism->y_pos < 0 || $organism->y_pos >= $cells) {
-                throw new InvalidInputException("Value of element 'y_pos' of element 'organism' must be between 0 and number of cells");
+            if ($organism->y_pos < 0 || $organism->y_pos >= $height) {
+                throw new InvalidInputException("Value of element 'y_pos' of element 'organism' must be between 0 and width");
             }
             $thisSpecies = (int)$organism->species;
             if ($thisSpecies < 0 || $thisSpecies >= $speciesCount) {

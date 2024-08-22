@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <life>
     <world>
-        <cells>4</cells> <!-- Dimension of the square "world" -->
+        <width>4</width> <!-- Dimension of the square "world" -->
+        <height>4</height> <!-- Dimension of the square "world" -->
         <species>1</species> <!-- Number of distinct species -->
         <iterations>10</iterations> <!-- Number of iterations to be calculated -->
     </world>
